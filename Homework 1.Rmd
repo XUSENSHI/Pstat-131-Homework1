@@ -1,0 +1,133 @@
+---
+title: "Pstat-131-Homework1"
+author: "Thomas Shi"
+date: "2022/4/4"
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+```{r setup, include=FALSE}
+# packages
+library(tidyverse)
+library(faraway)
+library(ggplot2)
+library(corrplot)
+```
+Machine Learning Main Ideas
+
+1
+In supervised learning there is a supervisor Y which is real data. Y is a raw observed output.
+The outcome of our model wants to be as close as possible to Y without overfitting.
+
+In unsupervised learning, we fit our model without a supervisor. There are no responses.
+We want to find the pattern of our data without a specific goal. Most of unsupervised learning are
+clustering.
+
+The difference between supervised learning and unsupervised learning is whether there is a supervisor
+or not.
+
+2
+Regression models are used to predict and analyze quantitative data. Data are numerical values and
+continuous.
+
+Classification models are used to analyze qualitative data with categorical values.
+
+4
+Descriptive models are used to visualize and emphasize a trend in data.
+
+Inferential models are used to detect significant features, test theories, and state relationship or
+causation between outcome and predictors
+
+Predictive models are used to predict Y with minimum reducible error and the best combo of features
+
+5, 
+Mechanistic means that models are fitted with parameters, while empirically-driven doesn't fit model with
+parameters. For mechanistic, it is impossible to fit a perfectly matched function. For empirically-driven,
+large numbers of observations are needed. Empirically-driven are more flexible than mechanistic, but 
+mechanistic can increase its flexibility by increasing the number of parameters. Both of them will face the risk
+of overfitting
+
+I think, mechanistic will be easier to understand because with parameters, the relationship between x and y will
+be easier to interpret and be understood
+
+6
+The first question is predictive because it asks to predict a probability of a voter that will 
+vote in favor of candidate
+
+The second question is inferential because it asks for a relationship between personal contact with 
+the candidate and the likelihood of support for the condidate
+
+Exploratory Data Analysis
+
+1
+```{r, echo = T}
+hwy <- pull(mpg, hwy)
+hist(hwy)
+```
+The histogram of highway miles per gallon is right-skewed
+
+2
+```{r, echo = T}
+cty <- pull(mpg, cty)
+ggplot(data = mpg, mapping = aes(x = hwy, y = cty)) + 
+  geom_point()
+```
+There is a strong positive linear relationship between highway miles per gallon and cty.
+It means that if hwy increase cty will increase with it linearly with high probability.
+
+3
+```{r, echo = T, fig.height = 15}
+manufacturer <- table(mpg$manufacturer)
+manufacturer
+ggplot(data = mpg, aes(y = manufacturer)) + geom_bar(orientation = "y")
+
+```
+Dodge produce the most and Lincoln produce the least
+
+4
+```{r, echo = T}
+ggplot(data = mpg, aes(x = hwy, group = cty, fill = cty)) + geom_boxplot()
+```
+Except for some extreme values, when values of cty are relatively high or relatively low the rage of hwy is wider.
+When the values of cty are moderate, the rage of hwy are relatively narrower.
+
+5
+```{r, echo = T}
+mpg_small <- mpg %>% 
+  select(displ,year,cyl,cty,hwy,)
+mpg_small
+M <- cor(mpg_small)
+corrplot(M, method = 'square', order = 'FPC', type = 'lower', diag = FALSE)
+```
+All the categorical variables are removed
+There is a positive relationship between hwy and cty, and cyl and displ
+There is a negative relationship between displ and cty, cyl and cty, displ and hwy, and cyl and hwy
+I am surprise that number of cylinders and engine displacement has a negative relationship with
+miles per gallon. Rest of the relationship make sense to me
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
